@@ -33,6 +33,7 @@ const router = express.Router();
  *          description: the members associated with the project
  *          minItems: 1
  *        tareas:
+ *          type: array
  *          items:
  *            $ref: '#/components/schemas/Task'
  *          description: the tasks associated with the project
