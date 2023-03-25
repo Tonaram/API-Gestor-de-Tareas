@@ -8,6 +8,6 @@
 2. Instalar las dependencias, posicionado en el directorio del proyecto:
 `npm install`
 3. En el archivo .env reemplazar el URL default por el URL real de la cadena de conexión a la base de datos.
-4. Correr la aplicacion:
+4. Correr la aplicación:
 `npm start`
 5. Abrir el http://localhost: con su respectivo puerto. Para utilizar swagger es con http://localhost:3000/api-doc/
