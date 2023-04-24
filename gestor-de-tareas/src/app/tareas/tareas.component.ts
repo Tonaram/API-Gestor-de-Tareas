@@ -1,33 +1,65 @@
-// src\app\servicios\tareas.service.ts
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+// src\app\tareas\tareas.component.ts
 
-@Injectable({
-  providedIn: 'root'
+import { Component, OnInit } from '@angular/core';
+import { TareasService } from '../servicios/tareas.service';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+
+@Component({
+  selector: 'app-tareas',
+  templateUrl: './tareas.component.html',
+  styleUrls: ['./tareas.component.scss']
 })
-export class TareasService {
-  private apiUrl = 'http://localhost:3000/api/tasks';
-  
-  constructor(private http: HttpClient) { }
+export class TareasComponent implements OnInit {
+  taskForm: FormGroup;
+  successMessage: string | null = null;
+  errorMessage: string | null = null;
+  displayedColumns: string[] = ['nombre', 'descripcion', 'fechaInicio', 'fechaFin', 'estado', 'acciones'];
+  tasks: any[] = [];
 
-  createTask(data: any): Observable<any> {
-    return this.http.post(this.apiUrl, data);
+  constructor(
+    private fb: FormBuilder,
+    private tareasService: TareasService
+  ) {
+    this.taskForm = this.fb.group({
+      nombre: ['', Validators.required],
+      descripcion: ['', Validators.required],
+      fechaInicio: ['', Validators.required],
+      fechaFin: ['', Validators.required],
+      estado: ['', Validators.required]
+    });
   }
 
-  getTasks(): Observable<any> {
-    return this.http.get(this.apiUrl);
+  ngOnInit(): void {
+    this.updateTasksList();
   }
 
-  getTask(id: string): Observable<any> {
-    return this.http.get(`${this.apiUrl}/${id}`);
+  ngOnSubmit(): void {
+    this.successMessage = null;
+    this.errorMessage = null;
+
+    this.tareasService.createTask(this.taskForm.value).subscribe(
+      (response) => {
+        console.log('Tarea creada:', response);
+        this.successMessage = 'Tarea creada con éxito';
+        this.taskForm.reset();
+        this.updateTasksList();
+      },
+      (error) => {
+        console.error('Error al crear tarea:', error);
+        this.errorMessage = 'Hubo un error al crear la tarea';
+      }
+    );
   }
 
-  updateTask(id: string, data: any): Observable<any> {
-    return this.http.put(`${this.apiUrl}/${id}`, data);
-  }
-
-  deleteTask(id: string): Observable<any> {
-    return this.http.delete(`${this.apiUrl}/${id}`);
+  updateTasksList(): void {
+    this.tareasService.getTasks().subscribe(
+      (response) => {
+        this.tasks = response;
+      },
+      (error) => {
+        console.error('Error al obtener tareas:', error);
+        this.errorMessage = 'Hubo un error al cargar la lista de tareas';
+      }
+    );
   }
 }
