@@ -1,8 +1,109 @@
-<div class="container">
-    <h2>Tareas</h2>
-    <ul>
-      <li *ngFor="let task of tasks">
-        {{ task.nombre }}
-      </li>
-    </ul>
-  </div>  
+<!-- src\app\tareas\tareas.component.html -->
+
+<mat-card>
+  <mat-card-title>Agregar tarea</mat-card-title>
+  <mat-card-content>
+    <form [formGroup]="taskForm" (ngSubmit)="ngOnSubmit()">
+      <div *ngIf="successMessage" class="alert alert-success">{{ successMessage }}</div>
+      <div *ngIf="errorMessage" class="alert alert-danger">{{ errorMessage }}</div>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Nombre</mat-label>
+        <input matInput formControlName="nombre" placeholder="Nombre" required>
+        <mat-error *ngIf="taskForm.controls['nombre'].invalid && taskForm.controls['nombre'].touched">
+          Ingrese un nombre válido
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Descripción</mat-label>
+        <textarea matInput formControlName="descripcion" placeholder="Descripción" required></textarea>
+        <mat-error *ngIf="taskForm.controls['descripcion'].invalid && taskForm.controls['descripcion'].touched">
+          Ingrese una descripción válida
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Fecha de inicio</mat-label>
+        <input matInput [matDatepicker]="pickerInicio" formControlName="fechaInicio" placeholder="Fecha de inicio" required>
+        <mat-datepicker-toggle matSuffix [for]="pickerInicio"></mat-datepicker-toggle>
+        <mat-datepicker #pickerInicio></mat-datepicker>
+        <mat-error *ngIf="taskForm.controls['fechaInicio'].invalid && taskForm.controls['fechaInicio'].touched">
+          Ingrese una fecha válida
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Fecha de finalización</mat-label>
+        <input matInput [matDatepicker]="pickerFin" formControlName="fechaFin" placeholder="Fecha de finalización" required>
+        <mat-datepicker-toggle matSuffix [for]="pickerFin"></mat-datepicker-toggle>
+        <mat-datepicker #pickerFin></mat-datepicker>
+        <mat-error *ngIf="taskForm.controls['fechaFin'].invalid && taskForm.controls['fechaFin'].touched">
+          Ingrese una fecha válida
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Estado</mat-label>
+        <mat-select formControlName="estado" required>
+          <mat-option value="activo">Activo</mat-option>
+          <mat-option value="inactivo">Inactivo</mat-option>
+        </mat-select>
+        <mat-error *ngIf="taskForm.controls['estado'].invalid && taskForm.controls['estado'].touched">
+          Seleccione un estado válido
+        </mat-error>
+      </mat-form-field>
+
+      <button mat-raised-button color="primary" type="submit" [disabled]="taskForm.invalid">Agregar tarea</button>
+    </form>
+  </mat-card-content>
+</mat-card>
+
+<mat-card>
+  <mat-card-title>Lista de tareas</mat-card-title>
+  <mat-card-content>
+    <mat-table [dataSource]="tasks">
+      <ng-container matColumnDef="nombre">
+        <mat-header-cell *matHeaderCellDef> Nombre </mat-header-cell>
+        <mat-cell *matCellDef="let task"> {{task.nombre}} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="descripcion">
+        <mat-header-cell *matHeaderCellDef> Descripción </mat-header-cell>
+        <mat-cell *matCellDef="let task"> {{task.descripcion}} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="fechaInicio">
+        <mat-header-cell *matHeaderCellDef> Fecha de inicio </mat-header-cell>
+        <mat-cell *matCellDef="let task"> {{task.fechaInicio | date:'shortDate'}} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="fechaFin">
+        <mat-header-cell *matHeaderCellDef> Fecha de finalización </mat-header-cell>
+        <mat-cell *matCellDef="let task"> {{task.fechaFin | date:'shortDate'}} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="estado">
+        <mat-header-cell *matHeaderCellDef> Estado </mat-header-cell>
+        <mat-cell *matCellDef="let task"> {{task.estado}} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="acciones">
+        <mat-header-cell *matHeaderCellDef> Acciones </mat-header-cell>
+        <mat-cell *matCellDef="let task">
+          <button mat-icon-button color="primary">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button mat-icon-button color="warn">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </mat-cell>
+      </ng-container>
+
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    </mat-table>
+
+    <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+  </mat-card-content>
+</mat-card> 
