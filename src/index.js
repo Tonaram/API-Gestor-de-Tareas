@@ -10,6 +10,10 @@ const path = require("path");
 const app = express();
 const port = process.env.PORT || 3000;
 
+// CORS
+const cors = require('cors');
+app.use(cors());
+
 // swagger
 const swaggerUI = require("swagger-ui-express");
 const swaggerJsDoc = require("swagger-jsdoc");
@@ -49,4 +53,3 @@ mongoose.connect(process.env.MONGODB_URI).then(() => {
 });
 
 app.listen(port, () => console.log("server listening on port", port));
-
