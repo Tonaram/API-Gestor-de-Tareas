@@ -1,0 +1,79 @@
+<!-- src\app\usuarios\usuarios.component.html -->
+
+<mat-card>
+  <mat-card-title>Agregar usuario</mat-card-title>
+  <mat-card-content>
+    <form [formGroup]="userForm" (ngSubmit)="ngOnSubmit()">
+      <div *ngIf="successMessage" class="alert alert-success">{{ successMessage }}</div>
+      <div *ngIf="errorMessage" class="alert alert-danger">{{ errorMessage }}</div>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Nombre</mat-label>
+        <input matInput formControlName="nombre" placeholder="Nombre" required minlength="3" maxlength="50" pattern="^[a-zA-Z\s\-]+$">
+        <mat-error *ngIf="userForm.controls['nombre'].invalid && userForm.controls['nombre'].touched">
+          Ingrese un nombre válido
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Email</mat-label>
+        <input matInput formControlName="email" placeholder="Email" type="email" required>
+        <mat-error *ngIf="userForm.controls['email'].invalid && userForm.controls['email'].touched">
+          Ingrese un email válido
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Password</mat-label>
+        <input matInput formControlName="contraseña" placeholder="Password" type="password" required minlength="6" maxlength="18" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@#%&*\-+!_])[a-zA-Z0-9$@#%&*\-+!_]+$">
+        <mat-error *ngIf="userForm.controls['contraseña'].invalid && userForm.controls['contraseña'].touched">
+          Ingrese una contraseña válida
+        </mat-error>        
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Imagen</mat-label>
+        <input matInput formControlName="imagen" placeholder="URL de la imagen" required pattern="^https?:\/\/[^\s]+(?:\.(?:jpe?g|gif|png))?">
+        <mat-error *ngIf="userForm.controls['imagen'].invalid && userForm.controls['imagen'].touched">
+          Ingrese un URL válido
+        </mat-error>
+      </mat-form-field>
+
+      <button mat-raised-button color="primary" type="submit" [disabled]="userForm.invalid">Agregar usuario</button>
+    </form>
+  </mat-card-content>
+</mat-card>
+
+<mat-card>
+  <mat-card-title>Lista de usuarios</mat-card-title>
+  <mat-card-content>
+    <mat-table [dataSource]="users">
+      <ng-container matColumnDef="nombre">
+        <mat-header-cell *matHeaderCellDef> Nombre </mat-header-cell>
+        <mat-cell *matCellDef="let user"> {{user.nombre}} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="email">
+        <mat-header-cell *matHeaderCellDef> Email </mat-header-cell>
+        <mat-cell *matCellDef="let user"> {{user.email}} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="acciones">
+        <mat-header-cell *matHeaderCellDef> Acciones </mat-header-cell>
+        <mat-cell *matCellDef="let user">
+          <button mat-icon-button color="primary">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button mat-icon-button color="warn">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </mat-cell>
+      </ng-container>
+
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    </mat-table>
+
+    <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+  </mat-card-content>
+</mat-card>

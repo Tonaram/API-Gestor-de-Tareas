@@ -1,0 +1,51 @@
+// src\app\usuarios\usuarios.component.scss
+
+
+:host {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+  
+  form {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+  
+  .mat-form-field {
+    flex: 1;
+  }
+  
+  .alert {
+    width: 100%;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border-radius: 4px;
+  }
+  
+  .alert-success {
+    background-color: #d4edda;
+    border-color: #c3e6cb;
+    color: #155724;
+  }
+  
+  .alert-danger {
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+    color: #721c24;
+  }
+  
+  .mat-table {
+    width: 100%;
+    overflow-x: auto;
+    margin-bottom: 1rem;
+  }
+  
+  .mat-paginator {
+    width: 100%;
+    overflow-x: auto;
+  }
+  
+  

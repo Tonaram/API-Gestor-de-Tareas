@@ -1,0 +1,47 @@
+<!-- src\app\app.component.html -->
+
+<header class="app-header">
+    <mat-toolbar color="primary">
+      <div class="nav-container">
+        <nav>
+          <a mat-button routerLink="/">Inicio | </a>
+          <a mat-button routerLink="/proyectos">Proyectos |</a>
+          <a mat-button routerLink="/tareas">Tareas |</a>
+          <a mat-button routerLink="/usuarios">Usuarios |</a>
+        </nav>
+        <div class="app-name">
+          <mat-icon>playlist_add_check</mat-icon>
+          Gestor de Tareas
+        </div>
+      </div>
+      <div class="user-menu-container">
+        <button mat-button [matMenuTriggerFor]="userMenu">
+          <mat-icon>account_circle</mat-icon>
+          Usuario
+        </button>
+        <mat-menu #userMenu="matMenu">
+          <button mat-menu-item>Ver perfil</button>
+          <button mat-menu-item>Cerrar sesión</button>
+        </mat-menu>
+      </div>
+    </mat-toolbar>
+  </header>
+  
+  <main class="container">
+    <router-outlet></router-outlet>
+  </main>
+
+<footer class="app-footer">
+    <div class="footer-content">
+      <div>
+        <p>© 2023 Todos los derechos reservados. Versión 0.3</p>
+      </div>
+      <div class="support">
+        <a mat-button href="#">
+          <mat-icon aria-hidden="false" aria-label="soporte al cliente">support_agent</mat-icon>
+          Soporte
+        </a>
+      </div>
+    </div>
+  </footer>
+  
