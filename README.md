@@ -2,6 +2,7 @@
 - Repositorio para el proyecto de Programación de Aplicaciones de Escritorio P-2023 "Gestor de Tareas".
 - Algunas pruebas se hicieron con requests.http y la extensión Rest Client de VSC, pero poco después mejor se hicieron todas con swagger.
 - En swagger se incluyen ejemplos de como utilizar las funciones para cada entidad, entre otra documentación útil.
+- swagger podria estar desactualizado por la actualización de autenticación
 - Modificar las variables en .env por sus propias
 
 ## Instalación:
