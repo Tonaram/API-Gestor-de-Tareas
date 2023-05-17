@@ -1,3 +1,4 @@
+// src\models\project.js
 const mongoose = require("mongoose");
 
 const projectSchema = mongoose.Schema({
@@ -6,7 +7,7 @@ const projectSchema = mongoose.Schema({
     fechaInicio: {type: Date, required: true},
     fechaFin: {type: Date, required: true},
     estado: {type: String, required: true},
-    miembros: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true}],
+    creator: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
     tareas: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Task', default: [] }]
 });
 

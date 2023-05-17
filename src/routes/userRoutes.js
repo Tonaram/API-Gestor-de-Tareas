@@ -1,8 +1,8 @@
+// src\routes\userRoutes.js
 const express = require("express");
 const controller = require("./../controllers/userController");
-
+const { authMiddleware, adminMiddleware } = require("../middlewares/authMiddleware");
 const router = express.Router();
-
 
 /**
  * @swagger
@@ -86,7 +86,7 @@ router.post('/users', controller.create);
  *                $ref: '#/components/schemas/User'
  * 
  */
-router.get('/users', controller.getAll);
+router.get('/users', authMiddleware, adminMiddleware, controller.getAll);
 
 /**
  * @swagger
@@ -112,7 +112,7 @@ router.get('/users', controller.getAll);
  *      404:
  *        description: couldn't find user
  */
-router.get('/users/:id', controller.getOne);
+router.get('/users/:id', authMiddleware, adminMiddleware, controller.getOne);
 
 /**
  * @swagger
@@ -140,7 +140,7 @@ router.get('/users/:id', controller.getOne);
  *      404:
  *        description: couldn't find user
  */
-router.put('/users/:id', controller.update);
+router.put('/users/:id', authMiddleware, adminMiddleware, controller.update);
 
 /**
  * @swagger
@@ -161,6 +161,6 @@ router.put('/users/:id', controller.update);
  *      404:
  *        description: couldn't find user
  */
-router.delete("/users/:id", controller.delete);
+router.delete("/users/:id", authMiddleware, adminMiddleware, controller.delete);
 
 module.exports = router;

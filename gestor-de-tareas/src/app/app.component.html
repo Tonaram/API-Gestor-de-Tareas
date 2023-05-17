@@ -1,40 +1,40 @@
 <!-- src\app\app.component.html -->
 
 <header class="app-header">
-    <mat-toolbar color="primary">
-      <div class="nav-container">
-        <nav>
-          <a mat-button routerLink="/">Inicio | </a>
-          <a mat-button routerLink="/proyectos">Proyectos |</a>
-          <a mat-button routerLink="/tareas">Tareas |</a>
-          <a mat-button routerLink="/usuarios">Usuarios |</a>
-        </nav>
-        <div class="app-name">
-          <mat-icon>playlist_add_check</mat-icon>
-          Gestor de Tareas
-        </div>
-      </div>
-      <div class="user-menu-container">
-        <button mat-button [matMenuTriggerFor]="userMenu">
-          <mat-icon>account_circle</mat-icon>
-          Usuario
-        </button>
-        <mat-menu #userMenu="matMenu">
-          <button mat-menu-item>Ver perfil</button>
-          <button mat-menu-item>Cerrar sesión</button>
-        </mat-menu>
-      </div>
-    </mat-toolbar>
-  </header>
-  
-  <main class="container">
-    <router-outlet></router-outlet>
-  </main>
+  <mat-toolbar color="primary">
+    <div class="nav-container" *ngIf="showHeader">
+      <nav>
+        <a mat-button routerLink="/">Inicio | </a>
+        <a mat-button routerLink="/proyectos">Proyectos |</a>
+        <a mat-button routerLink="/tareas">Tareas |</a>
+        <a mat-button *ngIf="isAdmin()" routerLink="/usuarios">Usuarios |</a>
+      </nav>
+    </div>
+    <div class="app-name">
+      <mat-icon>playlist_add_check</mat-icon>
+      Gestor de Tareas
+    </div>
+    <div class="user-menu-container" *ngIf="showHeader">
+      <button mat-button [matMenuTriggerFor]="userMenu">
+        <mat-icon>account_circle</mat-icon>
+        Usuario
+      </button>
+      <mat-menu #userMenu="matMenu">
+        <button mat-menu-item>Ver perfil</button>
+        <button mat-menu-item (click)="logout()">Cerrar sesión</button>
+      </mat-menu>
+    </div>
+  </mat-toolbar>
+</header>
+
+<main class="container">
+  <router-outlet (activate)="onActivate($event)"></router-outlet>
+</main>
 
 <footer class="app-footer">
     <div class="footer-content">
       <div>
-        <p>© 2023 Todos los derechos reservados. Versión 0.3</p>
+        <p>© 2023 Todos los derechos reservados. Versión 0.5</p>
       </div>
       <div class="support">
         <a mat-button href="#">

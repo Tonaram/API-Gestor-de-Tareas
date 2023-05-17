@@ -1,9 +1,13 @@
+// src\index.js
 const express = require("express");
 const mongoose = require("mongoose");
+const passport = require("passport");
+const session = require('express-session');
 require("dotenv").config();
 const userRoutes = require("./routes/userRoutes");
 const projectRoutes = require("./routes/projectRoutes");
 const taskRoutes = require("./routes/taskRoutes");
+const authRoutes = require('./routes/authRoutes');
 const path = require("path");
 
 // settings
@@ -35,6 +39,18 @@ const swaggerSpec = {
 
 // middleware
 app.use(express.json());
+app.use(session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false
+}));
+
+require('./passport'); // Passport configuration
+app.use(passport.initialize());
+app.use(passport.session());
+
+
+app.use('/api/auth', authRoutes);
 app.use("/api", userRoutes);
 app.use("/api", projectRoutes);
 app.use("/api", taskRoutes);

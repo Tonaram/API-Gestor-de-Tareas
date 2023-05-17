@@ -1,8 +1,8 @@
+// src\routes\projectRoutes.js
 const express = require("express");
 const controller = require("./../controllers/projectController");
-
+const { authMiddleware, adminMiddleware } = require("../middlewares/authMiddleware");
 const router = express.Router();
-
 
 /**
  * @swagger
@@ -73,7 +73,7 @@ const router = express.Router();
  *      200:
  *        description: new project created
  */
-router.post('/projects', controller.create);
+router.post('/projects', authMiddleware, controller.create);
 
 /**
  * @swagger
@@ -92,7 +92,7 @@ router.post('/projects', controller.create);
  *                $ref: '#/components/schemas/Project'
  * 
  */
-router.get('/projects', controller.getAll);
+router.get('/projects', authMiddleware, controller.getAll);
 
 /**
  * @swagger
@@ -118,7 +118,7 @@ router.get('/projects', controller.getAll);
  *      404:
  *        description: couldn't find project
  */
-router.get('/projects/:id', controller.getOne);
+router.get('/projects/:id', authMiddleware, controller.getOne);
 
 /**
  * @swagger
@@ -146,7 +146,7 @@ router.get('/projects/:id', controller.getOne);
  *      404:
  *        description: couldn't find project
  */
-router.put('/projects/:id', controller.update);
+router.put('/projects/:id', authMiddleware, controller.update);
 
 /**
  * @swagger
@@ -167,6 +167,6 @@ router.put('/projects/:id', controller.update);
  *      404:
  *        description: couldn't find project
  */
-router.delete("/projects/:id", controller.delete);
+router.delete("/projects/:id", authMiddleware, controller.delete);
 
 module.exports = router;

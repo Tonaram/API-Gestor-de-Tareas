@@ -1,6 +1,5 @@
-// src\app\servicios\tareas.service.ts
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient} from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -8,7 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class TareasService {
   private apiUrl = 'http://localhost:3000/api/tasks';
-  
+
   constructor(private http: HttpClient) { }
 
   createTask(data: any): Observable<any> {

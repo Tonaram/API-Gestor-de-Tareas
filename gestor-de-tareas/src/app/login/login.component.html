@@ -1,0 +1,14 @@
+<!-- gestor-de-tareas\src\app\login\login.component.html -->
+<form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
+  <mat-form-field appearance="fill">
+    <mat-label>Email</mat-label>
+    <input matInput formControlName="email" type="email">
+  </mat-form-field>
+  <mat-form-field appearance="fill">
+    <mat-label>Contraseña</mat-label>
+    <input matInput formControlName="contraseña" type="password">
+  </mat-form-field>
+  <button mat-raised-button color="primary" type="submit">Login</button>
+</form>
+<button mat-raised-button color="accent" (click)="openRegisterDialog()">Register</button>
+<button mat-raised-button color="accent" (click)="googleLogin()">Login with Google</button>

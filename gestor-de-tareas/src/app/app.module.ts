@@ -12,10 +12,12 @@ import { MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from "@angular/material/core";
 import { MatSelectModule } from '@angular/material/select';
+import { MatDialogModule } from '@angular/material/dialog';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -23,13 +25,21 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { UsuariosComponent } from './usuarios/usuarios.component';
 import { TareasComponent } from './tareas/tareas.component';
 import { ProyectosComponent } from './proyectos/proyectos.component';
+import { LoginComponent } from './login/login.component';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { TokenInterceptor } from './servicios/token.interceptor';
+import { AuthGuard } from './guardianes/auth.guard';
+import { AdminGuard } from './guardianes/admin.guard';
+import { RegisterDialogComponent } from './register-dialog/register-dialog.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     UsuariosComponent,
     TareasComponent,
-    ProyectosComponent
+    ProyectosComponent,
+    LoginComponent,
+    RegisterDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -37,6 +47,7 @@ import { ProyectosComponent } from './proyectos/proyectos.component';
     BrowserAnimationsModule,
     MatToolbarModule,
     ReactiveFormsModule,
+    FormsModule,
     MatCardModule,
     MatButtonModule,
     MatInputModule,
@@ -47,9 +58,18 @@ import { ProyectosComponent } from './proyectos/proyectos.component';
     MatDatepickerModule,
     MatNativeDateModule,
     MatSelectModule,
+    MatDialogModule,
     HttpClientModule
   ],
-  providers: [],
+  providers: [
+    AuthGuard, 
+    AdminGuard,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: TokenInterceptor,
+      multi: true,
+    },
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

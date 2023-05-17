@@ -1,8 +1,10 @@
+// src\controllers\userController.js
 const userSchema = require('./../models/user');
 
 const UsersController = {
     create: (req, res) => {
-        const user = userSchema(req.body);
+        const { nombre, email, contraseña, imagen } = req.body;
+        const user = new userSchema({ nombre, email, contraseña, imagen, role: 'user' });
         user.save().then((data) => res.json(data))
         .catch((error) => res.json({message: error}));
     },

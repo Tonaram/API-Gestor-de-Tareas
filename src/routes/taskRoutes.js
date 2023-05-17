@@ -1,6 +1,7 @@
+// src\routes\taskRoutes.js
 const express = require("express");
 const controller = require("./../controllers/taskController");
-
+const { authMiddleware, adminMiddleware } = require("../middlewares/authMiddleware");
 const router = express.Router();
 
 
@@ -68,7 +69,7 @@ const router = express.Router();
  *      200:
  *        description: new task created
  */
-router.post('/tasks', controller.create);
+router.post('/tasks', authMiddleware, controller.create);
 
 /**
  * @swagger
@@ -87,7 +88,7 @@ router.post('/tasks', controller.create);
  *                $ref: '#/components/schemas/Task'
  * 
  */
-router.get('/tasks', controller.getAll);
+router.get('/tasks', authMiddleware, controller.getAll);
 
 /**
  * @swagger
@@ -113,7 +114,7 @@ router.get('/tasks', controller.getAll);
  *      404:
  *        description: couldn't find task
  */
-router.get('/tasks/:id', controller.getOne);
+router.get('/tasks/:id', authMiddleware, controller.getOne);
 
 /**
  * @swagger
@@ -141,7 +142,7 @@ router.get('/tasks/:id', controller.getOne);
  *      404:
  *        description: couldn't find task
  */
-router.put('/tasks/:id', controller.update);
+router.put('/tasks/:id', authMiddleware, controller.update);
 
 /**
  * @swagger
@@ -162,6 +163,6 @@ router.put('/tasks/:id', controller.update);
  *      404:
  *        description: couldn't find task
  */
-router.delete("/tasks/:id", controller.delete);
+router.delete("/tasks/:id", authMiddleware, controller.delete);
 
 module.exports = router;

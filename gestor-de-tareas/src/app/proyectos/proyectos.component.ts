@@ -1,8 +1,10 @@
 // src\app\proyectos\proyectos.component.ts
 
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ProyectosService } from '../servicios/proyectos.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
   selector: 'app-proyectos',
@@ -14,7 +16,8 @@ export class ProyectosComponent implements OnInit {
   successMessage: string | null = null;
   errorMessage: string | null = null;
   displayedColumns: string[] = ['nombre', 'descripcion', 'fechaInicio', 'fechaFin', 'estado', 'acciones'];
-  projects: any[] = [];
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  projects!: MatTableDataSource<any>;
 
   constructor(
     private fb: FormBuilder,
@@ -51,15 +54,51 @@ export class ProyectosComponent implements OnInit {
     );
   }
 
+  onEdit(project: any): void {
+    if (project.editMode) {
+      
+      this.proyectosService.updateProject(project._id, project).subscribe(
+        () => {
+          this.successMessage = 'Project updated successfully';
+          project.editMode = false; 
+        },
+        error => {
+          console.error('Error updating project:', error);
+          this.errorMessage = 'Error updating project';
+        }
+      );
+    } else {
+      
+      project.editMode = true;
+    }
+  }
+  
+  onDelete(project: any): void {
+    console.log(project);
+    if (confirm('Are you sure you want to delete this project?')) {
+      this.proyectosService.deleteProject(project._id).subscribe(
+        () => {
+          this.successMessage = 'Project deleted successfully';
+          this.updateProjectsList();
+        },
+        error => {
+          console.error('Error deleting project:', error);
+          this.errorMessage = 'Error deleting project';
+        }
+      );
+    }
+  }
+
   updateProjectsList(): void {
     this.proyectosService.getProjects().subscribe(
       (response) => {
-        this.projects = response;
+        this.projects = new MatTableDataSource(response);
+        this.projects.paginator = this.paginator;
       },
       (error) => {
         console.error('Error al obtener proyectos:', error);
         this.errorMessage = 'Hubo un error al cargar la lista de proyectos';
       }
     );
-  }
+  }  
 }

@@ -54,6 +54,18 @@
         </mat-error>
       </mat-form-field>
 
+      <mat-form-field appearance="fill">
+        <mat-label>Proyecto</mat-label>
+        <mat-select formControlName="proyecto" required>
+          <mat-option *ngFor="let task of userProjects" [value]="task._id">
+            {{task.nombre}}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="taskForm.controls['proyecto'].invalid && taskForm.controls['proyecto'].touched">
+          Seleccione un proyecto válido
+        </mat-error>
+      </mat-form-field>
+
       <button mat-raised-button color="primary" type="submit" [disabled]="taskForm.invalid">Agregar tarea</button>
     </form>
   </mat-card-content>
@@ -65,38 +77,72 @@
     <mat-table [dataSource]="tasks">
       <ng-container matColumnDef="nombre">
         <mat-header-cell *matHeaderCellDef> Nombre </mat-header-cell>
-        <mat-cell *matCellDef="let task"> {{task.nombre}} </mat-cell>
+        <mat-cell *matCellDef="let task">
+          <div *ngIf="!task.editMode">{{task.nombre}}</div>
+          <input *ngIf="task.editMode" [(ngModel)]="task.nombre">
+        </mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="descripcion">
         <mat-header-cell *matHeaderCellDef> Descripción </mat-header-cell>
-        <mat-cell *matCellDef="let task"> {{task.descripcion}} </mat-cell>
+        <mat-cell *matCellDef="let task">
+          <div *ngIf="!task.editMode">{{task.descripcion}}</div>
+          <input *ngIf="task.editMode" [(ngModel)]="task.descripcion">
+        </mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="fechaInicio">
         <mat-header-cell *matHeaderCellDef> Fecha de inicio </mat-header-cell>
-        <mat-cell *matCellDef="let task"> {{task.fechaInicio | date:'shortDate'}} </mat-cell>
+        <mat-cell *matCellDef="let task">
+          <div *ngIf="!task.editMode">{{task.fechaInicio | date:'shortDate'}}</div>
+          <input *ngIf="task.editMode" [(ngModel)]="task.fechaInicio">
+        </mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="fechaFin">
         <mat-header-cell *matHeaderCellDef> Fecha de finalización </mat-header-cell>
-        <mat-cell *matCellDef="let task"> {{task.fechaFin | date:'shortDate'}} </mat-cell>
+        <mat-cell *matCellDef="let task">
+          <div *ngIf="!task.editMode">{{task.fechaFin | date:'shortDate'}}</div>
+          <input *ngIf="task.editMode" [(ngModel)]="task.fechaFin">
+        </mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="estado">
         <mat-header-cell *matHeaderCellDef> Estado </mat-header-cell>
-        <mat-cell *matCellDef="let task"> {{task.estado}} </mat-cell>
+        <mat-cell *matCellDef="let task">
+          <div *ngIf="!task.editMode">{{task.estado}}</div>
+          <mat-form-field *ngIf="task.editMode" appearance="fill">
+            <mat-select [(value)]="task.estado">
+              <mat-option value="activo">Activo</mat-option>
+              <mat-option value="inactivo">Inactivo</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="proyecto">
+        <mat-header-cell *matHeaderCellDef> Proyecto </mat-header-cell>
+        <mat-cell *matCellDef="let task">
+          <div *ngIf="!task.editMode">{{task.proyecto}}</div>
+          <mat-form-field *ngIf="task.editMode" appearance="fill">
+            <mat-select [(value)]="task.proyecto">
+              <mat-option *ngFor="let project of userProjects" [value]="project._id">
+                {{project.nombre}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="acciones">
         <mat-header-cell *matHeaderCellDef> Acciones </mat-header-cell>
         <mat-cell *matCellDef="let task">
-          <button mat-icon-button color="primary">
-            <mat-icon>edit</mat-icon>
-          </button>
-          <button mat-icon-button color="warn">
-            <mat-icon>delete</mat-icon>
-          </button>
+            <button mat-icon-button color="primary" (click)="onEdit(task)">
+              <mat-icon>{{task.editMode ? 'check' : 'edit'}}</mat-icon>
+            </button>
+            <button mat-icon-button color="warn" (click)="onDelete(task)">
+              <mat-icon>delete</mat-icon>
+            </button>
         </mat-cell>
       </ng-container>
 

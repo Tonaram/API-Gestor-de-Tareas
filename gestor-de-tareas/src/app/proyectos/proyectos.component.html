@@ -65,36 +65,51 @@
     <mat-table [dataSource]="projects">
       <ng-container matColumnDef="nombre">
         <mat-header-cell *matHeaderCellDef> Nombre </mat-header-cell>
-        <mat-cell *matCellDef="let project"> {{project.nombre}} </mat-cell>
+        <mat-cell *matCellDef="let project">
+          <div *ngIf="!project.editMode">{{project.nombre}}</div>
+          <input *ngIf="project.editMode" [(ngModel)]="project.nombre">
+        </mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="descripcion">
         <mat-header-cell *matHeaderCellDef> Descripción </mat-header-cell>
-        <mat-cell *matCellDef="let project"> {{project.descripcion}} </mat-cell>
+        <mat-cell *matCellDef="let project">
+          <div *ngIf="!project.editMode">{{project.descripcion}}</div>
+          <input *ngIf="project.editMode" [(ngModel)]="project.descripcion">
+        </mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="fechaInicio">
         <mat-header-cell *matHeaderCellDef> Fecha de inicio </mat-header-cell>
-        <mat-cell *matCellDef="let project"> {{project.fechaInicio | date:'shortDate'}} </mat-cell>
+        <mat-cell *matCellDef="let project">
+          <div *ngIf="!project.editMode">{{project.fechaInicio | date:'shortDate'}}</div>
+          <input *ngIf="project.editMode" [(ngModel)]="project.fechaInicio">
+        </mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="fechaFin">
         <mat-header-cell *matHeaderCellDef> Fecha de finalización </mat-header-cell>
-        <mat-cell *matCellDef="let project"> {{project.fechaFin | date:'shortDate'}} </mat-cell>
+        <mat-cell *matCellDef="let project">
+          <div *ngIf="!project.editMode">{{project.fechaFin | date:'shortDate'}}</div>
+          <input *ngIf="project.editMode" [(ngModel)]="project.fechaFin">
+        </mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="estado">
         <mat-header-cell *matHeaderCellDef> Estado </mat-header-cell>
-        <mat-cell *matCellDef="let project"> {{project.estado}} </mat-cell>
+        <mat-cell *matCellDef="let project">
+          <div *ngIf="!project.editMode">{{project.estado}}</div>
+          <input *ngIf="project.editMode" [(ngModel)]="project.estado">
+        </mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="acciones">
         <mat-header-cell *matHeaderCellDef> Acciones </mat-header-cell>
         <mat-cell *matCellDef="let project">
-          <button mat-icon-button color="primary">
-            <mat-icon>edit</mat-icon>
+          <button mat-icon-button color="primary" (click)="onEdit(project)">
+            <mat-icon>{{project.editMode ? 'check' : 'edit'}}</mat-icon>
           </button>
-          <button mat-icon-button color="warn">
+          <button mat-icon-button color="warn" (click)="onDelete(project)">
             <mat-icon>delete</mat-icon>
           </button>
         </mat-cell>
